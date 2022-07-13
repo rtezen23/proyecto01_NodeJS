@@ -1,5 +1,5 @@
 // Models
-const { Order } = require('../models/Order.model');
+const { Order } = require('../models/zorder.model');
 const { Restaurant } = require('../models/restaurant.model');
 const { Meal } = require('../models/meal.model');
 
@@ -34,7 +34,7 @@ const getAllOrders = catchAsync(async (req, res, next) => {
 
     const orders = await Order.findAll({
         include: [
-            { model: Meal }
+            { model: Meal, include: Restaurant }
         ]
     });
 
@@ -47,6 +47,11 @@ const getAllOrders = catchAsync(async (req, res, next) => {
 const updateOrder = catchAsync(async (req, res, next) => {
 
     const { order } = req;
+    const { sessionUser } = req;
+
+    if (sessionUser.id !== Number(order.userId)) {
+        return next(new AppError("You didn't make this order", 401))
+    }
 
     if (order.status !== 'active') {
         return next(new AppError("We can only update active orders", 401))
@@ -59,6 +64,12 @@ const updateOrder = catchAsync(async (req, res, next) => {
 
 const deleteOrder = catchAsync(async (req, res, next) => {
     const { order } = req;
+
+    const { sessionUser } = req;
+
+    if (sessionUser.id !== Number(order.userId)) {
+        return next(new AppError("You didn't make this order", 401))
+    }
 
     if (order.status !== 'active') {
         return next(new AppError("We can only delete active orders", 401))

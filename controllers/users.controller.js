@@ -5,7 +5,8 @@ const dotenv = require('dotenv');
 // Models
 const { User } = require('../models/user.model');
 const { Restaurant } = require('../models/restaurant.model');
-const { Order } = require('../models/order.model');
+const { Order } = require('../models/zorder.model');
+const { Meal } = require('../models/meal.model');
 
 // Utils
 const { catchAsync } = require('../utils/catchAsync.util');
@@ -92,7 +93,7 @@ const getAllOrders = catchAsync(async (req, res, next) => {
     const { sessionUser } = req;
     const orders = await Order.findAll({
         include: [
-            { model: Restaurant },
+            { model: Meal, attributes: ['name', 'restaurantId'], include: Restaurant, required: 'false' }
         ],
         where: { userId: sessionUser.id }
     });

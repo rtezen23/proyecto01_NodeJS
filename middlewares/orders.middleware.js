@@ -1,4 +1,4 @@
-const { Order } = require('../models/order.model');
+const { Order } = require('../models/zorder.model');
 
 const { AppError } = require('../utils/appError.util');
 const { catchAsync } = require('../utils/catchAsync.util');

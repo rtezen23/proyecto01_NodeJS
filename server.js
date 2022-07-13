@@ -3,9 +3,9 @@ const { app } = require('./app');
 // Models
 const { Restaurant } = require('./models/restaurant.model');
 const { Meal } = require('./models/meal.model');
-const { Order } = require('./models/order.model');
 const { Review } = require('./models/review.model');
 const { User } = require('./models/user.model');
+const { Order } = require('./models/zorder.model');
 
 // Utils
 const { db } = require('./utils/database.util');
@@ -20,17 +20,24 @@ Review.belongsTo(Restaurant);
 User.hasMany(Review, { foreignKey: 'userId' });
 Review.belongsTo(User);
 
-Meal.hasOne(Order);
-Order.belongsTo(Meal);
+User.hasMany(Order);
+Order.belongsTo(User);
 
 Restaurant.hasMany(Meal, { foreignKey: 'restaurantId' });
 Meal.belongsTo(Restaurant);
 
-User.hasMany(Order, { foreignKey: 'userId' });
-Order.belongsTo(User);
+Meal.hasOne(Order);
+Order.belongsTo(Meal);
+
+/* Meal.hasOne(Order, {
+    foreignKey: {
+        allowNull: false
+    }
+}); */
 
 
-db.sync()
+
+db.sync({ force: false })
     .then(() => console.log('Db synced'))
     .catch(err => console.log(err));
 

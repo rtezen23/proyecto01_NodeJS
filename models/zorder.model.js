@@ -12,18 +12,19 @@ const Order = db.define('order', {
     mealId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
+        /* references: {
             model: Meal,
             key: 'id',
-        },
+        }, */
     },
     userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
+        /* references: {
             model: User,
             key: 'id',
-        },
+
+        }, */
     },
     totalPrice: {
         type: DataTypes.INTEGER,
@@ -37,7 +38,7 @@ const Order = db.define('order', {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: 'active',
-    }
+    },
 });
 
 module.exports = { Order };

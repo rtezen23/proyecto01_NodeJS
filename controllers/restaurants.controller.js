@@ -93,17 +93,12 @@ const createRestaurantReview = catchAsync(async (req, res, next) => {
 });
 
 const updateReview = catchAsync(async (req, res, next) => {
-    const { sessionUser } = req;
-    const { id } = req.params;
+    const { sessionUser, review } = req;
     const { comment, rating } = req.body;
 
-    if (sessionUser.id !== Number(id)) {
+    if (sessionUser.id !== review.userId) {
         return next(new AppError("You didn't write this review", 401))
     }
-
-    const review = await Review.findOne({
-        where: { id }
-    })
 
     await review.update({
         comment,
@@ -114,17 +109,12 @@ const updateReview = catchAsync(async (req, res, next) => {
 });
 
 const deleteReview = catchAsync(async (req, res, next) => {
-    const { sessionUser } = req;
-    const { id } = req.params;
+    const { sessionUser, review } = req;
 
-    if (sessionUser.id !== Number(id)) {
+    if (sessionUser.id !== review.userId) {
         return next(new AppError("You didn't write this review", 401))
     }
 
-    const review = await Review.findOne({
-        where: { id }
-    })
-    /* FALTA CREAR EL STATUS EN TABLA REVIEW */
     await review.update({
         status: 'inactive'
     })

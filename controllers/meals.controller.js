@@ -10,6 +10,12 @@ const createMeal = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const { name, price } = req.body;
 
+    const restaurantFound = await Restaurant.findOne({ where: { id } })
+
+    if (!restaurantFound) {
+        return next(new AppError("Restaurant doesn't exist", 404))
+    }
+
     const newMeal = await Meal.create({
         name,
         price,

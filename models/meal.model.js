@@ -24,6 +24,7 @@ const Meal = db.define('meal', {
         allowNull: false,
         defaultValue: 'active',
     },
+
 });
 
 module.exports = { Meal };

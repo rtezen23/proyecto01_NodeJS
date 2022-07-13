@@ -29,6 +29,8 @@ usersRouter.post('/signup', createUserValidators, createUser);
 usersRouter.post('/login', login);
 
 usersRouter.use(protectSession);
+usersRouter.get('/orders', getAllOrders)
+usersRouter.get('/orders/:id', getOrderById)
 
 usersRouter
     .use('/:id', userExists)
@@ -36,8 +38,6 @@ usersRouter
     .patch(protectUserAccount, updateUser)
     .delete(protectUserAccount, deleteUser);
 
-usersRouter.get('/orders', protectUserAccount, getAllOrders)
-usersRouter.get('/orders/:id', protectUserAccount, getOrderById)
 
 
 
